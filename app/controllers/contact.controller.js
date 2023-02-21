@@ -24,8 +24,16 @@ exports.findAll = async (req, res, next) => {
     try {
         const contactService = new ContactService(MongoDB.client);
         const { name } = req.query;
-        if (name) {
+        const { email } = req.query;
+        const { phone } = req.query;
+        if(name && email && phone){
+            documents = await contactService.findByAll(name, email, phone);
+        }else if (name) {
             documents = await contactService.findByName(name);
+        } else if(email){
+            documents = await contactService.findByEmail(email);
+        } else if(phone){
+            documents = await contactService.findByPhone(phone);
         } else {
             documents = await contactService.find({});
         }

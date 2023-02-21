@@ -40,6 +40,26 @@ class ContactService {
         });
     }
 
+    async findByEmail(email) {
+        return await this.find({
+            email: { $regex: new RegExp(email) },
+        });
+    }
+
+    async findByPhone(phone) {
+        return await this.find({
+            phone: { $regex: new RegExp(phone) },
+        });
+    }
+
+    async findByAll(name, email, phone) {
+        return await this.find({
+            name: { $regex: new RegExp(name), $options: "i" },
+            email: { $regex: new RegExp(email)},
+            phone: { $regex: new RegExp(phone)},
+        });
+    }
+
     async findById(id) {
         return await this.Contact.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null
